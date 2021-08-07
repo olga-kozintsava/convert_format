@@ -12,10 +12,7 @@ class Json extends Manager
         return json_decode($contents, true);
     }
 
-    /**
-     * @throws \JsonException
-     */
-    public function write($content): void
+    public function write(array $content): void
     {
         $jsonData = json_encode($content, JSON_THROW_ON_ERROR);
         file_put_contents($this->outputFilePath, $jsonData);

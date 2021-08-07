@@ -17,10 +17,14 @@ class Csv extends Manager
 
     public function write($content): void
     {
-        $fp = fopen($this->outputFilePath, 'w');
-        foreach ($content as $fields) {
-            fputcsv($fp, $fields);
+        $fp = fopen($this->outputFilePath, 'wb');
+//      foreach ($content as $fields) {
+//            fputcsv($fp, $fields);
+        fputcsv($fp, array_keys($content));
+        foreach ( $content as $row ) {
+            fputcsv($fp, (array)$row);
+        }
 
         }
-    }
+
 }
