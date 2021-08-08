@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace FileConverter;
 
+
 abstract class FormatFactory
 {
-    public static function create($format)
+    public static function create($format):?object
     {
-        switch ($format) {
-            case 'json':
-                return new Json();
-            case 'csv':
-                return new Csv();
-            case 'xml':
-                return new Xml();
-        }
+        return match ($format) {
+            'json' => new Json(),
+            'csv' => new Csv(),
+            'xml' => new Xml(),
+            default => null,
+        };
     }
 
-    abstract public function read(\SplFileObject $file);
+    abstract public function read(\SplFileObject $file):array;
 
-    abstract public function write(array $content, string $outputFilePath);
+    abstract public function write(array $content, string $outputFilePath):void;
 }

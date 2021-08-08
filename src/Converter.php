@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FileConverter;
 
-
+use Exception;
 
 class Converter
 {
@@ -24,10 +24,16 @@ class Converter
 
     public function convert(): void
     {
-        $readClass = FormatFactory::create($this->inputFormat);
-        $data = $readClass->read($this->file);
+        try {
+            $readClass = FormatFactory::create($this->inputFormat);
+        } catch (\Exception) {
+            exit();
+        }
+        if ($readClass !== null) {
+            $data = $readClass->read($this->file);
+        }
         $writeClass = FormatFactory::create($this->outFormat);
-        $writeClass->write($data,$this->outputFilePath);
+        $writeClass?->write($data, $this->outputFilePath);
     }
 }
 
