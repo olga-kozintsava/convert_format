@@ -15,9 +15,9 @@ class ConverterTest extends TestCase
     {
         $outputFilePath = $this->workspace . '/output.json';
         $file = new \SplFileObject(__DIR__ . '/test.json');
-        $converter = $this->getConverter();
+        $converter = $this->getConverter($file, 'json', 'json',$outputFilePath);
 
-        $converter->convert($file, 'json', $outputFilePath);
+        $converter->convert();
 
         $this->assertSame(
             '{"a":1,"b":"string","c":{"nested":true}}',
@@ -29,9 +29,9 @@ class ConverterTest extends TestCase
     {
         $outputFilePath = $this->workspace . '/output.csv';
         $file = new \SplFileObject(__DIR__ . '/test.csv');
-        $converter = $this->getConverter();
+        $converter = $this->getConverter($file, 'csv','csv', $outputFilePath);
 
-        $result = $converter->convert($file, 'csv', $outputFilePath);
+        $result = $converter->convert();
 
         $this->assertSame(
             <<<FILE
@@ -48,9 +48,9 @@ FILE
     {
         $outputFilePath = $this->workspace . '/output.json';
         $file = new \SplFileObject(__DIR__ . '/test.csv');
-        $converter = $this->getConverter();
+        $converter = $this->getConverter($file,'csv', 'json', $outputFilePath);
 
-        $converter->convert($file, 'json', $outputFilePath);
+        $converter->convert();
 
         $this->assertSame(
             '[["a","b","c"],["d","e","f"]]',
@@ -69,8 +69,9 @@ FILE
         @unlink($this->workspace);
     }
 
-    private function getConverter()
+    private function getConverter($file, $inputFormat, $outputFormat, $outputFilePath)
     {
-        return new Converter(/* ??? */);
+
+        return new Converter($file, $inputFormat, $outputFormat, $outputFilePath);
     }
 }

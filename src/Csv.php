@@ -4,27 +4,22 @@ declare(strict_types=1);
 
 namespace FileConverter;
 
-class Csv extends Manager
+class Csv extends FormatFactory
 {
-    public function read(): array
+    public function read(\SplFileObject $file): array
     {
         $result = array();
-        while (!$this->file->eof()) {
-            $result[] = $this->file->fgetcsv();
+        while (!$file->eof()) {
+            $result[] = $file->fgetcsv();
         }
         return $result;
     }
 
-    public function write($content): void
+    public function write(array $content, string $outputFilePath): void
     {
-        $fp = fopen($this->outputFilePath, 'wb');
-//      foreach ($content as $fields) {
-//            fputcsv($fp, $fields);
-        fputcsv($fp, array_keys($content));
-        foreach ( $content as $row ) {
-            fputcsv($fp, (array)$row);
+        $fp = fopen($outputFilePath, 'w');
+        foreach ($content as $fields) {
+            fputcsv($fp, $fields);
         }
-
-        }
-
+    }
 }
